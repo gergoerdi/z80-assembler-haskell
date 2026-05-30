@@ -70,8 +70,9 @@ reserveLoc x st = st{ loc = loc st + x }
 
 tellBytes :: [Word8] -> Z80ASM
 tellBytes bytes = do
+    loc <- incrementLoc . fromIntegral $ length bytes
     Z80 $ tell $ BS.pack bytes
-    incrementLoc . fromIntegral $ length bytes
+    pure loc
       -- The new location has to be computed lazily in the actual
       -- content of the bytes, so that we can emit byte values
       -- referring to later labels.
@@ -96,8 +97,9 @@ resb n = Z80 $ do
 
 defByteString :: ByteString -> Z80ASM
 defByteString bs = do
+  loc <- incrementLoc . fromIntegral $ BS.length bs
   Z80 $ tell bs
-  incrementLoc . fromIntegral $ BS.length bs
+  pure loc
 
 label :: Z80 Location
 label = loc <$> Z80 get
