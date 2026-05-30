@@ -26,6 +26,7 @@ import Data.Word
 import qualified Data.ByteString as BS
 import Data.ByteString (ByteString)
 
+import Control.Monad.Fix (MonadFix(..))
 import Control.Monad.RWS
 import Data.Maybe
 
